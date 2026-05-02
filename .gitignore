@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+wheels/
+.venv/
+.python-version
+
+# Env
+.env
+.env.local
+
+# Outputs
+outputs/
+*.diarized.json
+
+# Examples (downloaded; can be regenerated)
+examples/*.wav
+examples/*.mp3
+examples/*.flac
+examples/*.m4a
+
+# YouTube-sourced clips (copyrighted; never commit) — but track the sources manifest
+examples/yt/*
+!examples/yt/SOURCES.md
+
+# Caches
+.cache/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# OS
+.DS_Store
+.superpowers/
