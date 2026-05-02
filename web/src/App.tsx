@@ -2,6 +2,9 @@ import { useEffect, useReducer } from "react";
 import type { DiarizeResponse } from "./types";
 import { listSpeakers, getHealth } from "./api";
 import { audioHash } from "./lib/audioHash";
+import { Uploader } from "./components/Uploader";
+import { Toolbar } from "./components/Toolbar";
+import { diarize, ApiError } from "./api";
 
 type Status = "idle" | "uploading" | "diarizing" | "ready" | "error";
 
@@ -130,6 +133,36 @@ export function App() {
     dispatch({ type: "audio/load", audio: { file, url, hash }, renames });
   }
 
+  async function run() {
+    if (!state.audio) return;
+    dispatch({ type: "diarize/start" });
+    let lastProgress = 0;
+    const { promise } = diarize(
+      state.audio.file,
+      {
+        identify: state.identify,
+        returnEmbeddings: true,
+        minSpeakers: state.minSpeakers,
+        maxSpeakers: state.maxSpeakers,
+      },
+      (loaded, total) => {
+        const p = total > 0 ? loaded / total : 0;
+        if (p - lastProgress >= 0.02 || p >= 1) {
+          lastProgress = p;
+          dispatch({ type: "diarize/progress", value: p });
+          if (p >= 1) dispatch({ type: "diarize/inflight" });
+        }
+      },
+    );
+    try {
+      const result = await promise;
+      dispatch({ type: "diarize/success", result });
+    } catch (err) {
+      const message = err instanceof ApiError ? err.message : String(err);
+      dispatch({ type: "diarize/error", message });
+    }
+  }
+
   return (
     <div style={{ display: "grid", gridTemplateRows: "auto 1fr", height: "100%" }}>
       <div style={{
@@ -147,17 +180,34 @@ export function App() {
         </span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", minHeight: 0 }}>
-        <div style={{ padding: 16, overflow: "auto" }}>
-          {!state.audio && (
-            <input type="file" accept="audio/*" onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) loadFile(f);
-            }} />
-          )}
+        <div style={{ padding: 16, overflow: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
+          {!state.audio && <Uploader onFile={loadFile} />}
           {state.audio && (
-            <div className="mono dim" style={{ fontSize: 12 }}>
-              {state.audio.file.name} · {(state.audio.file.size / 1024 / 1024).toFixed(2)} MB
-            </div>
+            <>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <span className="mono" style={{ fontSize: 12 }}>
+                  {state.audio.file.name} · {(state.audio.file.size / 1024 / 1024).toFixed(2)} MB
+                </span>
+                <button onClick={() => dispatch({ type: "audio/clear" })} disabled={state.status === "uploading" || state.status === "diarizing"}>
+                  ✕ clear
+                </button>
+              </div>
+              <Toolbar
+                identify={state.identify}
+                onIdentifyChange={(v) => dispatch({ type: "toolbar/identify", value: v })}
+                minSpeakers={state.minSpeakers}
+                maxSpeakers={state.maxSpeakers}
+                onMinChange={(v) => dispatch({ type: "toolbar/minSpeakers", value: v })}
+                onMaxChange={(v) => dispatch({ type: "toolbar/maxSpeakers", value: v })}
+                status={state.status}
+                uploadProgress={state.uploadProgress}
+                canRun={state.modelLoaded && state.status !== "uploading" && state.status !== "diarizing"}
+                onRun={run}
+              />
+              {state.status === "error" && state.error && (
+                <div style={{ color: "var(--error)", fontSize: 13 }}>error: {state.error}</div>
+              )}
+            </>
           )}
         </div>
         <div style={{ padding: 16, borderLeft: "1px solid var(--border)", background: "var(--bg-elev)", overflow: "auto" }}>
