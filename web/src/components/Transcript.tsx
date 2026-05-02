@@ -30,6 +30,14 @@ export function Transcript({ segments, renames, currentTime, onSeek }: Props) {
     rowRefs.current[activeIdx]?.scrollIntoView({ block: "center", behavior: "smooth" });
   }, [activeIdx]);
 
+  if (segments.length === 0 || segments.every((s) => !s.speaker)) {
+    return (
+      <div className="dim" style={{ padding: 24, textAlign: "center", fontSize: 13 }}>
+        no speech detected
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}

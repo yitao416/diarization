@@ -130,6 +130,22 @@ export function App() {
     return () => { cancel = true; };
   }, []);
 
+  // Spacebar play/pause shortcut
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.code !== "Space") return;
+      const tag = (e.target as HTMLElement | null)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      const audio = document.querySelector("audio");
+      if (!audio) return;
+      e.preventDefault();
+      if (audio.paused) void audio.play();
+      else audio.pause();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   async function loadFile(file: File) {
     const url = URL.createObjectURL(file);
     const hash = await audioHash(file);
