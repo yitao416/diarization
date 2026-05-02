@@ -1,9 +1,10 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import type { DiarizeResponse } from "./types";
 import { listSpeakers, getHealth } from "./api";
 import { audioHash } from "./lib/audioHash";
 import { Uploader } from "./components/Uploader";
 import { Toolbar } from "./components/Toolbar";
+import { Player } from "./components/Player";
 import { diarize, ApiError } from "./api";
 
 type Status = "idle" | "uploading" | "diarizing" | "ready" | "error";
@@ -103,6 +104,9 @@ function reducer(state: State, action: Action): State {
 
 export function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
+  // setSeekTo is wired in Task 9 (transcript click-to-seek)
+  const [seekTo, setSeekTo] = useState<number | null>(null);
+  void setSeekTo; // suppress noUnusedLocals until Task 9
 
   // Initial gallery load + health poll
   useEffect(() => {
@@ -204,6 +208,16 @@ export function App() {
                 canRun={state.modelLoaded && state.status !== "uploading" && state.status !== "diarizing"}
                 onRun={run}
               />
+              {state.result && state.audio && (
+                <Player
+                  audioUrl={state.audio.url}
+                  segments={state.result.segments}
+                  duration={Math.max(...state.result.segments.map((s) => s.end), 0)}
+                  onTimeChange={(t) => dispatch({ type: "playback/time", value: t })}
+                  onPlayingChange={(p) => dispatch({ type: "playback/playing", value: p })}
+                  seekTo={seekTo}
+                />
+              )}
               {state.status === "error" && state.error && (
                 <div style={{ color: "var(--error)", fontSize: 13 }}>error: {state.error}</div>
               )}
