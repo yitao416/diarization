@@ -18,8 +18,8 @@ export function ErrorToast({ message, onClose }: Props) {
       zIndex: 100,
       maxWidth: "80vw",
     }}>
-      <span style={{ color: "var(--error)", fontSize: 13 }}>{message}</span>
-      <button onClick={onClose} style={{ fontSize: 11 }}>✕</button>
+      <span style={{ color: "var(--error)", fontSize: 26 }}>{message}</span>
+      <button onClick={onClose} style={{ fontSize: 22 }}>✕</button>
     </div>
   );
 }

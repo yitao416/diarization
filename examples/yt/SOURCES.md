@@ -16,7 +16,7 @@ Each is a clean window of a single speaker, used by `POST /speakers/enroll`. Pic
 |------|------------|--------|---------|
 | `elon_lex.wav` | https://www.youtube.com/watch?v=54OSbbtXrdI (Lex Clips: "How Elon Musk solves problems: First principles thinking explained", 2021-12-31, 9:43) | 0:35–1:00 (25s) | Elon Musk |
 | `gates_alz.wav` | https://www.youtube.com/watch?v=ov5UziJuEe4 (Bill Gates channel: "The next phase of the Alzheimer's fight is here", 2025-06-17, 1:15) | 0:10–0:35 (25s) | Bill Gates |
-| `sorkin_enroll.wav` | https://www.youtube.com/watch?v=_15DReQKbt8 (NYT Events: "Bill Gates Talks Philanthropy, Microsoft, and Taxes \| DealBook", 2019-11-06, 38:25) | 0:15–0:55 (40s) | Andrew Ross Sorkin (host) |
+| `sorkin_enroll.wav` | https://www.youtube.com/watch?v=5JJBOEPRB2k | 0:00–0:30 (30s) | Andrew Ross Sorkin (host) |
 | `gates_enroll.wav` | https://www.youtube.com/watch?v=_15DReQKbt8 (same DealBook 2019 clip) | 4:00–4:40 (40s) | Bill Gates |
 | `musk_enroll.wav` | https://www.youtube.com/watch?v=HchjzkQmDYU (Jack Jensen mirror: "Elon Musk interview by Andrew Ross Sorkin at DealBook Summit", 2023-11-30, 92:23) | 30:00–30:40 (40s) | Elon Musk |
 
@@ -30,7 +30,7 @@ Diarized + identified against the gallery via `POST /diarize?identify=true`.
 |------|------------|--------|----------|
 | `fox_news.wav` | https://www.youtube.com/watch?v=938XPqWQWwU (FOX 11 Los Angeles news segment about the Gates/Musk USAID feud, 2025-05-21, 2:12) | 0:00–2:12 (full) | FOX anchor voiceover + Musk response snippets. Note: clip narrates Gates' position but only plays Musk's audio — Gates is *not* in the audio. |
 | `fox_news_60s.wav` | Same URL as above, trimmed via `ffmpeg -t 60` | 0:00–1:00 | Same as above, first minute only. Better diarization than the full clip because trimming removes unrelated downstream stories that competed for the diarizer's clusters. |
-| `dealbook_gates_test.wav` | https://www.youtube.com/watch?v=_15DReQKbt8 (Gates DealBook 2019) | 8:00–9:00 (60s) | Mostly Gates answering on tax policy, with a brief 5s Sorkin question at the start. |
+| `dealbook_gates_test.wav` | https://www.youtube.com/watch?v=_15DReQKbt8 (Gates DealBook 2019) | 2:00–3:00 (60s) | Earlier in the interview where talk-time is more balanced between Sorkin and Gates — the 8:00 window was too Gates-dominant and collapsed into one diarizer cluster without `min/max=2`. |
 | `dealbook_musk_test.wav` | https://www.youtube.com/watch?v=HchjzkQmDYU (Musk DealBook 2023) | 8:00–9:00 (60s) | Mix of Musk apologizing for the anti-Semitic-tweet incident + Sorkin's framing question. This is the clip where the **cross-file Sorkin identification** lands (Sorkin enrolled from the 2019 Gates DealBook, identified at 0.78 cosine in this 2023 Musk DealBook). |
 
 ## License / legal

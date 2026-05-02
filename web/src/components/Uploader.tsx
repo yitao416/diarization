@@ -30,8 +30,8 @@ export function Uploader({ onFile }: Props) {
         userSelect: "none",
       }}
     >
-      <div style={{ fontSize: 14 }}>drop an audio file or click to choose</div>
-      <div className="dim" style={{ fontSize: 11, marginTop: 6 }}>
+      <div style={{ fontSize: 28 }}>drop an audio file or click to choose</div>
+      <div className="dim" style={{ fontSize: 22, marginTop: 6 }}>
         wav · flac · mp3 · m4a — anything ffmpeg reads
       </div>
       <input

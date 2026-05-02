@@ -40,10 +40,10 @@ export function Embeddings({ result, renames }: Props) {
         <div className="label">Embeddings — cosine</div>
         <div style={{ display: "grid", gridTemplateColumns: `auto repeat(${speakers.length}, 1fr)`, gap: 2, marginTop: 6 }}>
           <div />
-          {labels.map((l, j) => (<div key={j} className="mono dim" style={{ fontSize: 11, textAlign: "center" }}>{l}</div>))}
+          {labels.map((l, j) => (<div key={j} className="mono dim" style={{ fontSize: 22, textAlign: "center" }}>{l}</div>))}
           {labels.map((l, i) => (
             <React.Fragment key={i}>
-              <div className="mono dim" style={{ fontSize: 11 }}>{l}</div>
+              <div className="mono dim" style={{ fontSize: 22 }}>{l}</div>
               {speakers.map((_, j) => {
                 const v = (m[i][j] + 1) / 2; // [-1, 1] → [0, 1]
                 return (
@@ -56,7 +56,7 @@ export function Embeddings({ result, renames }: Props) {
                       textAlign: "center",
                       padding: "4px 0",
                       fontFamily: "var(--mono)",
-                      fontSize: 11,
+                      fontSize: 22,
                     }}
                   >
                     {m[i][j].toFixed(2)}
@@ -87,7 +87,7 @@ export function Embeddings({ result, renames }: Props) {
         {points.map((p, i) => (
           <g key={i}>
             <circle cx={sx(p.x)} cy={sy(p.y)} r={5} fill={colorFor(speakers[i])} />
-            <text x={sx(p.x) + 8} y={sy(p.y) + 4} fontSize="11" fontFamily="var(--mono)" fill="var(--fg)">{labels[i]}</text>
+            <text x={sx(p.x) + 8} y={sy(p.y) + 4} fontSize="22" fontFamily="var(--mono)" fill="var(--fg)">{labels[i]}</text>
           </g>
         ))}
       </svg>

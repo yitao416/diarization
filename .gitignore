@@ -42,3 +42,7 @@ examples/yt/*
 # Frontend
 web/node_modules/
 web/dist/
+
+# Internal working notes — local only, not pushed
+CLAUDE.md
+docs/

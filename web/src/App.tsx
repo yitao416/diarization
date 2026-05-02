@@ -207,9 +207,9 @@ export function App() {
         alignItems: "center",
       }}>
         <strong>diarization</strong>
-        <span className="dim" style={{ fontSize: 12 }}>WhisperX + ECAPA</span>
+        <span className="dim" style={{ fontSize: 24 }}>WhisperX + ECAPA</span>
         <span style={{ flex: 1 }} />
-        <span className="dim" style={{ fontSize: 12 }}>
+        <span className="dim" style={{ fontSize: 24 }}>
           {state.modelLoaded ? "ready" : "loading models…"}
         </span>
       </div>
@@ -220,7 +220,7 @@ export function App() {
           {state.audio && (
             <>
               <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                <span className="mono" style={{ fontSize: 12 }}>
+                <span className="mono" style={{ fontSize: 24 }}>
                   {state.audio.file.name} · {(state.audio.file.size / 1024 / 1024).toFixed(2)} MB
                 </span>
                 <button onClick={() => dispatch({ type: "audio/clear" })} disabled={state.status === "uploading" || state.status === "diarizing"}>

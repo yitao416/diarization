@@ -7,7 +7,7 @@ export function HealthBanner({ loaded }: Props) {
       background: "var(--bg-elev-2)",
       borderBottom: "1px solid var(--border)",
       padding: "6px 16px",
-      fontSize: 12,
+      fontSize: 24,
       color: "var(--fg-dim)",
     }}>
       models loading… the run button will enable when ready

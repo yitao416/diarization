@@ -76,16 +76,16 @@ export function SpeakerCard(p: Props) {
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <span style={{ width: 10, height: 10, background: color, borderRadius: "50%", display: "inline-block" }} />
-        <strong style={{ fontSize: 13 }}>{p.display}</strong>
+        <strong style={{ fontSize: 26 }}>{p.display}</strong>
         {p.display !== p.speaker && (
-          <span className="dim mono" style={{ fontSize: 11 }}>{p.speaker}</span>
+          <span className="dim mono" style={{ fontSize: 22 }}>{p.speaker}</span>
         )}
       </div>
-      <div style={{ fontSize: 12 }}>{matchLine}</div>
+      <div style={{ fontSize: 24 }}>{matchLine}</div>
       {mode === "idle" && (
         <div style={{ display: "flex", gap: 6 }}>
-          <button onClick={startRename} style={{ fontSize: 12 }}>✎ rename</button>
-          <button onClick={startEnroll} style={{ fontSize: 12 }}>⤓ enroll</button>
+          <button onClick={startRename} style={{ fontSize: 24 }}>✎ rename</button>
+          <button onClick={startEnroll} style={{ fontSize: 24 }}>⤓ enroll</button>
         </div>
       )}
       {(mode === "rename" || mode === "enroll") && (
@@ -103,11 +103,11 @@ export function SpeakerCard(p: Props) {
             }}
           />
           {mode === "enroll" && turn && (
-            <div className="dim mono" style={{ fontSize: 11 }}>
+            <div className="dim mono" style={{ fontSize: 22 }}>
               window: {turn.start.toFixed(2)}–{turn.end.toFixed(2)}s ({(turn.end - turn.start).toFixed(2)}s)
             </div>
           )}
-          {err && <div style={{ color: "var(--error)", fontSize: 12 }}>{err}</div>}
+          {err && <div style={{ color: "var(--error)", fontSize: 24 }}>{err}</div>}
           <div style={{ display: "flex", gap: 6 }}>
             <button onClick={mode === "rename" ? commitRename : commitEnroll} disabled={busy}>
               {busy ? "…" : "save"}

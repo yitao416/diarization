@@ -32,7 +32,7 @@ export function Transcript({ segments, renames, currentTime, onSeek }: Props) {
 
   if (segments.length === 0 || segments.every((s) => !s.speaker)) {
     return (
-      <div className="dim" style={{ padding: 24, textAlign: "center", fontSize: 13 }}>
+      <div className="dim" style={{ padding: 24, textAlign: "center", fontSize: 26 }}>
         no speech detected
       </div>
     );
@@ -75,9 +75,9 @@ export function Transcript({ segments, renames, currentTime, onSeek }: Props) {
               alignItems: "baseline",
             }}
           >
-            <span style={{ color, fontWeight: 600, fontSize: 12 }}>{label}</span>
-            <span className="mono dim" style={{ fontSize: 12 }}>{fmtTime(s.start)}</span>
-            <span style={{ fontSize: 14 }}>{(s.text as string | undefined)?.trim() ?? ""}</span>
+            <span style={{ color, fontWeight: 600, fontSize: 24 }}>{label}</span>
+            <span className="mono dim" style={{ fontSize: 24 }}>{fmtTime(s.start)}</span>
+            <span style={{ fontSize: 28 }}>{(s.text as string | undefined)?.trim() ?? ""}</span>
           </div>
         );
       })}

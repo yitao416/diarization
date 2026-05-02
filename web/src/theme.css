@@ -21,7 +21,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 28px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -49,4 +49,4 @@ input[type="text"] {
 
 .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .dim { color: var(--fg-dim); }
-.label { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--fg-dim); }
+.label { font-size: 22px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--fg-dim); }

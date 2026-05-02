@@ -27,16 +27,16 @@ export function Gallery({ names, onChange }: Props) {
     <div>
       <div className="label">Gallery</div>
       {names.length === 0 ? (
-        <div className="dim mono" style={{ fontSize: 12, marginTop: 4 }}>empty</div>
+        <div className="dim mono" style={{ fontSize: 24, marginTop: 4 }}>empty</div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 6 }}>
           {names.map((n) => (
-            <div key={n} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12 }}>
+            <div key={n} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 24 }}>
               <span className="mono" style={{ flex: 1 }}>{n}</span>
               <button
                 onClick={() => remove(n)}
                 disabled={busy === n}
-                style={{ fontSize: 11, padding: "2px 6px" }}
+                style={{ fontSize: 22, padding: "2px 6px" }}
                 title="remove from gallery"
               >
                 ✕
@@ -45,7 +45,7 @@ export function Gallery({ names, onChange }: Props) {
           ))}
         </div>
       )}
-      {err && <div style={{ color: "var(--error)", fontSize: 12, marginTop: 4 }}>{err}</div>}
+      {err && <div style={{ color: "var(--error)", fontSize: 24, marginTop: 4 }}>{err}</div>}
     </div>
   );
 }
