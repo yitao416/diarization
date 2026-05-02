@@ -8,6 +8,14 @@ The pipeline is [WhisperX](https://github.com/m-bain/whisperX) (ASR → forced a
 
 https://github.com/user-attachments/assets/559303bc-35b2-4515-b5ca-26eb319c68bc
 
+What you're seeing, top to bottom:
+
+- **Segmentation + diarization.** The colored timeline strip shows *who* is speaking *when*. Each color is a distinct cluster found by pyannote.
+- **Transcript.** WhisperX produces word-aligned text per segment. Rows are tagged with the diarized speaker label and scroll in sync with playback.
+- **Speaker identification.** With **identify** turned on, each diarized speaker is matched against the enrolled gallery (right sidebar). The match is computed by cosine similarity between the speaker's ECAPA embedding for *this* clip and the embedding stored at enrollment time. Score is shown next to the name.
+
+**Note: there is no audio overlap between the demo input clip and any of the enrollment clips.** The enrollments come from different recordings (different years, different settings, different microphones) than the clip being identified. This is a real cross-file, cross-time test — the model is recognizing the *voice*, not memorizing the audio.
+
 ```bash
 uv sync
 HF_TOKEN=hf_xxx uv run uvicorn app.main:app
