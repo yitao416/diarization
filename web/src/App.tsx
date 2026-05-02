@@ -5,6 +5,7 @@ import { audioHash } from "./lib/audioHash";
 import { Uploader } from "./components/Uploader";
 import { Toolbar } from "./components/Toolbar";
 import { Player } from "./components/Player";
+import { Transcript } from "./components/Transcript";
 import { diarize, ApiError } from "./api";
 
 type Status = "idle" | "uploading" | "diarizing" | "ready" | "error";
@@ -104,9 +105,7 @@ function reducer(state: State, action: Action): State {
 
 export function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  // setSeekTo is wired in Task 9 (transcript click-to-seek)
   const [seekTo, setSeekTo] = useState<number | null>(null);
-  void setSeekTo; // suppress noUnusedLocals until Task 9
 
   // Initial gallery load + health poll
   useEffect(() => {
@@ -184,7 +183,7 @@ export function App() {
         </span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", minHeight: 0 }}>
-        <div style={{ padding: 16, overflow: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ padding: 16, overflow: "hidden", display: "flex", flexDirection: "column", gap: 12, minHeight: 0 }}>
           {!state.audio && <Uploader onFile={loadFile} />}
           {state.audio && (
             <>
@@ -216,6 +215,14 @@ export function App() {
                   onTimeChange={(t) => dispatch({ type: "playback/time", value: t })}
                   onPlayingChange={(p) => dispatch({ type: "playback/playing", value: p })}
                   seekTo={seekTo}
+                />
+              )}
+              {state.result && (
+                <Transcript
+                  segments={state.result.segments}
+                  renames={state.renames}
+                  currentTime={state.playback.currentTime}
+                  onSeek={(t) => { setSeekTo(null); requestAnimationFrame(() => setSeekTo(t)); }}
                 />
               )}
               {state.status === "error" && state.error && (
