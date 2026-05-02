@@ -11,37 +11,53 @@ type Props = {
   seekTo: number | null;
 };
 
+const TIME_DISPATCH_HZ = 10;
+
 export function Player({ audioUrl, segments, duration, onTimeChange, onPlayingChange, seekTo }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playheadRef = useRef<HTMLDivElement | null>(null);
   const stripRef = useRef<HTMLDivElement | null>(null);
   const playingRef = useRef(false);
 
+  // Stable refs so the rAF effect doesn't restart on every parent re-render.
+  const onTimeChangeRef = useRef(onTimeChange);
+  const onPlayingChangeRef = useRef(onPlayingChange);
+  useEffect(() => { onTimeChangeRef.current = onTimeChange; }, [onTimeChange]);
+  useEffect(() => { onPlayingChangeRef.current = onPlayingChange; }, [onPlayingChange]);
+
   useEffect(() => {
     if (seekTo != null && audioRef.current) {
       audioRef.current.currentTime = seekTo;
-      onTimeChange(seekTo);
+      onTimeChangeRef.current(seekTo);
       void audioRef.current.play();
     }
-  }, [seekTo, onTimeChange]);
+  }, [seekTo]);
 
   useEffect(() => {
     let raf = 0;
+    let lastDispatch = 0;
+    const minInterval = 1000 / TIME_DISPATCH_HZ;
     const tick = () => {
       if (audioRef.current && playheadRef.current && stripRef.current && duration > 0) {
         const t = audioRef.current.currentTime;
         const w = stripRef.current.clientWidth;
         playheadRef.current.style.transform = `translateX(${(t / duration) * w}px)`;
-        if (playingRef.current) onTimeChange(t);
+        if (playingRef.current) {
+          const now = performance.now();
+          if (now - lastDispatch >= minInterval) {
+            lastDispatch = now;
+            onTimeChangeRef.current(t);
+          }
+        }
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [duration, onTimeChange]);
+  }, [duration]);
 
-  const handlePlay = () => { playingRef.current = true; onPlayingChange(true); };
-  const handlePause = () => { playingRef.current = false; onPlayingChange(false); };
+  const handlePlay = () => { playingRef.current = true; onPlayingChangeRef.current(true); };
+  const handlePause = () => { playingRef.current = false; onPlayingChangeRef.current(false); };
 
   const handleStripClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!stripRef.current || !audioRef.current || duration <= 0) return;
@@ -49,7 +65,7 @@ export function Player({ audioUrl, segments, duration, onTimeChange, onPlayingCh
     const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
     const t = ratio * duration;
     audioRef.current.currentTime = t;
-    onTimeChange(t);
+    onTimeChangeRef.current(t);
   };
 
   return (
@@ -61,7 +77,7 @@ export function Player({ audioUrl, segments, duration, onTimeChange, onPlayingCh
         onPlay={handlePlay}
         onPause={handlePause}
         onEnded={handlePause}
-        onSeeked={() => audioRef.current && onTimeChange(audioRef.current.currentTime)}
+        onSeeked={() => audioRef.current && onTimeChangeRef.current(audioRef.current.currentTime)}
         style={{ width: "100%" }}
       />
       <div

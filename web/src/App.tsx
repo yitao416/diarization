@@ -112,9 +112,13 @@ export function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [seekTo, setSeekTo] = useState<number | null>(null);
 
+  function refreshGallery() {
+    listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {});
+  }
+
   // Initial gallery load + health poll
   useEffect(() => {
-    listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {});
+    refreshGallery();
     let cancel = false;
     const poll = async () => {
       try {
@@ -128,6 +132,7 @@ export function App() {
     };
     poll();
     return () => { cancel = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Spacebar play/pause shortcut
@@ -238,7 +243,7 @@ export function App() {
                 <Player
                   audioUrl={state.audio.url}
                   segments={state.result.segments}
-                  duration={Math.max(...state.result.segments.map((s) => s.end), 0)}
+                  duration={state.result.duration}
                   onTimeChange={(t) => dispatch({ type: "playback/time", value: t })}
                   onPlayingChange={(p) => dispatch({ type: "playback/playing", value: p })}
                   seekTo={seekTo}
@@ -264,13 +269,13 @@ export function App() {
               galleryEmpty={state.gallery.length === 0}
               audioFile={state.audio.file}
               onRename={(from, to) => dispatch({ type: "rename", from, to })}
-              onEnrolled={() => listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {})}
+              onEnrolled={refreshGallery}
             />
           )}
           {state.result && <Embeddings result={state.result} renames={state.renames} />}
           <Gallery
             names={state.gallery}
-            onChange={() => listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {})}
+            onChange={refreshGallery}
           />
         </div>
       </div>
