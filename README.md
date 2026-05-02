@@ -4,6 +4,12 @@ Speaker diarization, transcription, and **cross-file speaker identification** as
 
 The pipeline is [WhisperX](https://github.com/m-bain/whisperX) (ASR → forced alignment → pyannote diarization) plus [SpeechBrain ECAPA-TDNN](https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb) for speaker embeddings. There's a small React frontend that renders all of this interactively.
 
+## Demo
+
+<video src="https://github.com/yitao416/diarization/raw/main/examples/demo.mp4" controls width="800"></video>
+
+[Direct link](./examples/demo.mp4) (36 s, 841 KB).
+
 ```bash
 uv sync
 HF_TOKEN=hf_xxx uv run uvicorn app.main:app
