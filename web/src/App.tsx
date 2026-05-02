@@ -6,6 +6,7 @@ import { Uploader } from "./components/Uploader";
 import { Toolbar } from "./components/Toolbar";
 import { Player } from "./components/Player";
 import { Transcript } from "./components/Transcript";
+import { SpeakerSidebar } from "./components/SpeakerSidebar";
 import { diarize, ApiError } from "./api";
 
 type Status = "idle" | "uploading" | "diarizing" | "ready" | "error";
@@ -231,7 +232,18 @@ export function App() {
             </>
           )}
         </div>
-        <div style={{ padding: 16, borderLeft: "1px solid var(--border)", background: "var(--bg-elev)", overflow: "auto" }}>
+        <div style={{ padding: 16, borderLeft: "1px solid var(--border)", background: "var(--bg-elev)", overflow: "auto", display: "flex", flexDirection: "column", gap: 16 }}>
+          {state.result && state.audio && (
+            <SpeakerSidebar
+              result={state.result}
+              renames={state.renames}
+              identifyOn={state.identify}
+              galleryEmpty={state.gallery.length === 0}
+              audioFile={state.audio.file}
+              onRename={(from, to) => dispatch({ type: "rename", from, to })}
+              onEnrolled={() => listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {})}
+            />
+          )}
           <div className="label">Gallery</div>
           <div className="mono" style={{ fontSize: 12, marginTop: 4 }}>
             {state.gallery.length === 0 ? <span className="dim">empty</span> : state.gallery.join(" · ")}
