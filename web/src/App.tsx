@@ -7,6 +7,7 @@ import { Toolbar } from "./components/Toolbar";
 import { Player } from "./components/Player";
 import { Transcript } from "./components/Transcript";
 import { SpeakerSidebar } from "./components/SpeakerSidebar";
+import { Embeddings } from "./components/Embeddings";
 import { diarize, ApiError } from "./api";
 
 type Status = "idle" | "uploading" | "diarizing" | "ready" | "error";
@@ -244,6 +245,7 @@ export function App() {
               onEnrolled={() => listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {})}
             />
           )}
+          {state.result && <Embeddings result={state.result} renames={state.renames} />}
           <div className="label">Gallery</div>
           <div className="mono" style={{ fontSize: 12, marginTop: 4 }}>
             {state.gallery.length === 0 ? <span className="dim">empty</span> : state.gallery.join(" · ")}
