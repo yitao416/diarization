@@ -35,3 +35,7 @@ examples/yt/*
 # OS
 .DS_Store
 .superpowers/
+
+# Frontend
+web/node_modules/
+web/dist/
