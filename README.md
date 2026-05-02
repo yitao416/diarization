@@ -6,9 +6,7 @@ The pipeline is [WhisperX](https://github.com/m-bain/whisperX) (ASR → forced a
 
 ## Demo
 
-<video src="https://github.com/yitao416/diarization/raw/main/examples/demo.mp4" controls width="800"></video>
-
-[Direct link](./examples/demo.mp4) (36 s, 841 KB).
+https://github.com/user-attachments/assets/559303bc-35b2-4515-b5ca-26eb319c68bc
 
 ```bash
 uv sync
