@@ -59,7 +59,7 @@ export function SpeakerCard(p: Props) {
     matchLine = (
       <span>
         match: <strong>{p.identification.name}</strong>
-        <span className="mono dim" style={{ marginLeft: 6 }}>cos {p.identification.cosine.toFixed(2)}</span>
+        <span className="mono dim" style={{ marginLeft: 6 }}>cos {p.identification.score.toFixed(2)}</span>
       </span>
     );
   } else matchLine = <span className="dim">match: <i>none</i></span>;

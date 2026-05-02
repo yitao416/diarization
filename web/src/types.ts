@@ -1,26 +1,46 @@
+export type WordSegment = {
+  word: string;
+  start?: number | null;
+  end?: number | null;
+  score?: number | null;
+  speaker?: string | null;
+};
+
 export type Segment = {
   start: number;
   end: number;
-  text?: string;
-  speaker?: string;
-  // WhisperX may add more keys (words, etc.) — preserved as-is.
+  text: string;
+  speaker?: string | null;
+  words?: WordSegment[];
   [k: string]: unknown;
 };
 
 export type Identification = {
   name: string;
-  cosine: number;
-  margin: number;
+  score: number;
 };
 
 export type DiarizeResponse = {
-  language?: string;
+  language: string;
+  duration: number;
   num_speakers: number;
-  speakers: string[];
   segments: Segment[];
-  speaker_embeddings?: Record<string, number[]>;
-  identifications?: Record<string, Identification | null>;
+  embedding_dim?: number | null;
+  speaker_embeddings?: Record<string, number[]> | null;
+  identifications?: Record<string, Identification | null> | null;
 };
+
+export function speakersOf(result: Pick<DiarizeResponse, "segments">): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of result.segments) {
+    if (s.speaker && !seen.has(s.speaker)) {
+      seen.add(s.speaker);
+      out.push(s.speaker);
+    }
+  }
+  return out;
+}
 
 export type HealthResponse = {
   status: "ok" | "loading";

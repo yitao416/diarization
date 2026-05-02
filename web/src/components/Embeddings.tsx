@@ -1,5 +1,6 @@
 import React from "react";
 import type { DiarizeResponse } from "../types";
+import { speakersOf } from "../types";
 import { colorFor } from "../lib/colors";
 import { pca2D } from "../lib/pca";
 
@@ -27,7 +28,7 @@ function heatColor(v: number): string {
 export function Embeddings({ result, renames }: Props) {
   const emb = result.speaker_embeddings;
   if (!emb) return null;
-  const speakers = result.speakers.filter((s) => emb[s]);
+  const speakers = speakersOf(result).filter((s) => emb[s]);
   if (speakers.length <= 1) return null;
   const labels = speakers.map((s) => renames[s] ?? s);
 

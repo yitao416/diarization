@@ -1,4 +1,5 @@
 import type { DiarizeResponse } from "../types";
+import { speakersOf } from "../types";
 import { SpeakerCard } from "./SpeakerCard";
 
 type Props = {
@@ -15,7 +16,7 @@ export function SpeakerSidebar({ result, renames, identifyOn, galleryEmpty, audi
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       <div className="label">Speakers</div>
-      {result.speakers.map((sp) => (
+      {speakersOf(result).map((sp) => (
         <SpeakerCard
           key={sp}
           speaker={sp}
