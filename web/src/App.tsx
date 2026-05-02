@@ -8,6 +8,9 @@ import { Player } from "./components/Player";
 import { Transcript } from "./components/Transcript";
 import { SpeakerSidebar } from "./components/SpeakerSidebar";
 import { Embeddings } from "./components/Embeddings";
+import { Gallery } from "./components/Gallery";
+import { HealthBanner } from "./components/HealthBanner";
+import { ErrorToast } from "./components/ErrorToast";
 import { diarize, ApiError } from "./api";
 
 type Status = "idle" | "uploading" | "diarizing" | "ready" | "error";
@@ -169,7 +172,12 @@ export function App() {
   }
 
   return (
-    <div style={{ display: "grid", gridTemplateRows: "auto 1fr", height: "100%" }}>
+    <>
+    <ErrorToast
+      message={state.status === "error" ? state.error : null}
+      onClose={() => dispatch({ type: "error/clear" })}
+    />
+    <div style={{ display: "grid", gridTemplateRows: "auto auto 1fr", height: "100%" }}>
       <div style={{
         padding: "10px 16px",
         borderBottom: "1px solid var(--border)",
@@ -184,6 +192,7 @@ export function App() {
           {state.modelLoaded ? "ready" : "loading models…"}
         </span>
       </div>
+      <HealthBanner loaded={state.modelLoaded} />
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", minHeight: 0 }}>
         <div style={{ padding: 16, overflow: "hidden", display: "flex", flexDirection: "column", gap: 12, minHeight: 0 }}>
           {!state.audio && <Uploader onFile={loadFile} />}
@@ -227,9 +236,6 @@ export function App() {
                   onSeek={(t) => { setSeekTo(null); requestAnimationFrame(() => setSeekTo(t)); }}
                 />
               )}
-              {state.status === "error" && state.error && (
-                <div style={{ color: "var(--error)", fontSize: 13 }}>error: {state.error}</div>
-              )}
             </>
           )}
         </div>
@@ -246,12 +252,13 @@ export function App() {
             />
           )}
           {state.result && <Embeddings result={state.result} renames={state.renames} />}
-          <div className="label">Gallery</div>
-          <div className="mono" style={{ fontSize: 12, marginTop: 4 }}>
-            {state.gallery.length === 0 ? <span className="dim">empty</span> : state.gallery.join(" · ")}
-          </div>
+          <Gallery
+            names={state.gallery}
+            onChange={() => listSpeakers().then((names) => dispatch({ type: "gallery/set", names })).catch(() => {})}
+          />
         </div>
       </div>
     </div>
+    </>
   );
 }
