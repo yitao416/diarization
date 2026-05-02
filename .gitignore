@@ -16,6 +16,9 @@ wheels/
 outputs/
 *.diarized.json
 
+# Runtime gallery — mutates with every /speakers/enroll
+gallery.json
+
 # Examples (downloaded; can be regenerated)
 examples/*.wav
 examples/*.mp3

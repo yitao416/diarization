@@ -1,0 +1,24 @@
+[project]
+name = "diarization"
+version = "0.1.0"
+description = "Speaker diarization + transcription service built on WhisperX"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.136.1",
+    "httpx>=0.28.1",
+    "matplotlib>=3.10.9",
+    "pydantic-settings>=2.14.0",
+    "python-dotenv>=1.2.2",
+    "python-multipart>=0.0.27",
+    "scikit-learn>=1.8.0",
+    "soundfile>=0.13.1",
+    "speechbrain>=1.0.3",
+    "uvicorn[standard]>=0.46.0",
+    "whisperx>=3.8.5",
+]
+
+[project.scripts]
+diarize = "scripts.diarize:main"
+
+[tool.uv]
+package = false
